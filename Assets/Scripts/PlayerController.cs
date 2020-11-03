@@ -23,6 +23,15 @@ public class PlayerController : MonoBehaviour
     private bool isJumping;
     private bool facingRight = true;
 
+    //Wallsliding
+    public float wallSlideSpeed;
+    public LayerMask wallLayer;
+    public Transform wallCheckPoint;
+    public Vector2 wallCheckSize;
+    private bool isTouchingWall;
+    private bool isWallSliding;
+   
+
     //Dash
     public float dashSpeed = 30f;
     public float startDashTime = 0.1f;
@@ -41,6 +50,7 @@ public class PlayerController : MonoBehaviour
     {
 
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+        isTouchingWall = Physics2D.OverlapBox(wallCheckPoint.position, wallCheckSize, 0, wallLayer);
 
         if (isGrounded == true && Input.GetKeyDown(KeyCode.Space))
         {
@@ -60,6 +70,11 @@ public class PlayerController : MonoBehaviour
             {
                 isJumping = false;
             }
+
+        }
+
+        void WallSlide()
+        {
 
         }
 
@@ -123,5 +138,11 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(wallCheckPoint.position, wallCheckSize);
     }
 }
